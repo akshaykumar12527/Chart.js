@@ -470,7 +470,7 @@ var Legend = Element.extend({
 					y = cursor.y = me.top + alignmentOffset(legendHeight, columnHeights[cursor.line]);
 				}
 
-				drawLegendBox(x, y, legendItem, useLine);
+				drawLegendBox(x, y, legendItem, legendItem.useLine);
 
 				hitboxes[i].left = x;
 				hitboxes[i].top = y;
