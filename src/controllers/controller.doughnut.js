@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-var DatasetController = require('../core/core.datasetController');
-var defaults = require('../core/core.defaults');
-var elements = require('../elements/index');
-var helpers = require('../helpers/index');
+var DatasetController = require("../core/core.datasetController");
+var defaults = require("../core/core.defaults");
+var elements = require("../elements/index");
+var helpers = require("../helpers/index");
 
 var valueOrDefault = helpers.valueOrDefault;
 
@@ -11,7 +11,7 @@ var PI = Math.PI;
 var DOUBLE_PI = PI * 2;
 var HALF_PI = PI / 2;
 
-defaults._set('doughnut', {
+defaults._set("doughnut", {
 	animation: {
 		// Boolean - Whether we animate the rotation of the Doughnut
 		animateRotate: true,
@@ -19,7 +19,7 @@ defaults._set('doughnut', {
 		animateScale: false
 	},
 	hover: {
-		mode: 'single'
+		mode: "single"
 	},
 	legendCallback: function(chart) {
 		var text = [];
@@ -35,12 +35,12 @@ defaults._set('doughnut', {
 				if (labels[i]) {
 					text.push(labels[i]);
 				}
-				text.push('</li>');
+				text.push("</li>");
 			}
 		}
 
-		text.push('</ul>');
-		return text.join('');
+		text.push("</ul>");
+		return text.join("");
 	},
 	legend: {
 		labels: {
@@ -57,7 +57,7 @@ defaults._set('doughnut', {
 							strokeStyle: style.borderColor,
 							lineWidth: style.borderWidth,
 							hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
-
+							useLine: label.useLine || false,
 							// Extra data used for toggling the correct item
 							index: i
 						};
@@ -97,11 +97,11 @@ defaults._set('doughnut', {
 	tooltips: {
 		callbacks: {
 			title: function() {
-				return '';
+				return "";
 			},
 			label: function(tooltipItem, data) {
 				var dataLabel = data.labels[tooltipItem.index];
-				var value = ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+				var value = ": " + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
 
 				if (helpers.isArray(dataLabel)) {
 					// show value on first line of multiline label
@@ -119,7 +119,6 @@ defaults._set('doughnut', {
 });
 
 module.exports = DatasetController.extend({
-
 	dataElementType: elements.Arc,
 
 	linkScales: helpers.noop,
@@ -128,13 +127,13 @@ module.exports = DatasetController.extend({
 	 * @private
 	 */
 	_dataElementOptions: [
-		'backgroundColor',
-		'borderColor',
-		'borderWidth',
-		'borderAlign',
-		'hoverBackgroundColor',
-		'hoverBorderColor',
-		'hoverBorderWidth',
+		"backgroundColor",
+		"borderColor",
+		"borderWidth",
+		"borderAlign",
+		"hoverBackgroundColor",
+		"hoverBorderColor",
+		"hoverBorderWidth"
 	],
 
 	// Get index of the dataset in relation to the visible datasets. This allows determining the inner and outer radius correctly
@@ -223,7 +222,12 @@ module.exports = DatasetController.extend({
 		var startAngle = opts.rotation; // non reset case handled later
 		var endAngle = opts.rotation; // non reset case handled later
 		var dataset = me.getDataset();
-		var circumference = reset && animationOpts.animateRotate ? 0 : arc.hidden ? 0 : me.calculateCircumference(dataset.data[index]) * (opts.circumference / DOUBLE_PI);
+		var circumference =
+			reset && animationOpts.animateRotate
+				? 0
+				: arc.hidden
+				? 0
+				: me.calculateCircumference(dataset.data[index]) * (opts.circumference / DOUBLE_PI);
 		var innerRadius = reset && animationOpts.animateScale ? 0 : me.innerRadius;
 		var outerRadius = reset && animationOpts.animateScale ? 0 : me.outerRadius;
 		var options = arc._options || {};
@@ -327,7 +331,7 @@ module.exports = DatasetController.extend({
 			} else {
 				options = arc._options;
 			}
-			if (options.borderAlign !== 'inner') {
+			if (options.borderAlign !== "inner") {
 				borderWidth = options.borderWidth;
 				hoverWidth = options.hoverBorderWidth;
 
@@ -349,7 +353,7 @@ module.exports = DatasetController.extend({
 		arc.$previousStyle = {
 			backgroundColor: model.backgroundColor,
 			borderColor: model.borderColor,
-			borderWidth: model.borderWidth,
+			borderWidth: model.borderWidth
 		};
 
 		model.backgroundColor = valueOrDefault(options.hoverBackgroundColor, getHoverColor(options.backgroundColor));

@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-var DatasetController = require('../core/core.datasetController');
-var defaults = require('../core/core.defaults');
-var elements = require('../elements/index');
-var helpers = require('../helpers/index');
+var DatasetController = require("../core/core.datasetController");
+var defaults = require("../core/core.defaults");
+var elements = require("../elements/index");
+var helpers = require("../helpers/index");
 
 var resolve = helpers.options.resolve;
 
-defaults._set('polarArea', {
+defaults._set("polarArea", {
 	scale: {
-		type: 'radialLinear',
+		type: "radialLinear",
 		angleLines: {
 			display: false
 		},
@@ -45,12 +45,12 @@ defaults._set('polarArea', {
 				if (labels[i]) {
 					text.push(labels[i]);
 				}
-				text.push('</li>');
+				text.push("</li>");
 			}
 		}
 
-		text.push('</ul>');
-		return text.join('');
+		text.push("</ul>");
+		return text.join("");
 	},
 	legend: {
 		labels: {
@@ -67,7 +67,7 @@ defaults._set('polarArea', {
 							strokeStyle: style.borderColor,
 							lineWidth: style.borderWidth,
 							hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
-
+							useLine: label.useLine || false,
 							// Extra data used for toggling the correct item
 							index: i
 						};
@@ -95,17 +95,16 @@ defaults._set('polarArea', {
 	tooltips: {
 		callbacks: {
 			title: function() {
-				return '';
+				return "";
 			},
 			label: function(item, data) {
-				return data.labels[item.index] + ': ' + item.yLabel;
+				return data.labels[item.index] + ": " + item.yLabel;
 			}
 		}
 	}
 });
 
 module.exports = DatasetController.extend({
-
 	dataElementType: elements.Arc,
 
 	linkScales: helpers.noop,
@@ -114,13 +113,13 @@ module.exports = DatasetController.extend({
 	 * @private
 	 */
 	_dataElementOptions: [
-		'backgroundColor',
-		'borderColor',
-		'borderWidth',
-		'borderAlign',
-		'hoverBackgroundColor',
-		'hoverBorderColor',
-		'hoverBorderWidth',
+		"backgroundColor",
+		"borderColor",
+		"borderWidth",
+		"borderAlign",
+		"hoverBackgroundColor",
+		"hoverBorderColor",
+		"hoverBorderWidth"
 	],
 
 	update: function(reset) {
@@ -128,8 +127,8 @@ module.exports = DatasetController.extend({
 		var dataset = me.getDataset();
 		var meta = me.getMeta();
 		var start = me.chart.options.startAngle || 0;
-		var starts = me._starts = [];
-		var angles = me._angles = [];
+		var starts = (me._starts = []);
+		var angles = (me._angles = []);
 		var arcs = meta.data;
 		var i, ilen, angle;
 
@@ -161,10 +160,10 @@ module.exports = DatasetController.extend({
 		var minSize = Math.min(chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
 
 		chart.outerRadius = Math.max(minSize / 2, 0);
-		chart.innerRadius = Math.max(opts.cutoutPercentage ? (chart.outerRadius / 100) * (opts.cutoutPercentage) : 1, 0);
+		chart.innerRadius = Math.max(opts.cutoutPercentage ? (chart.outerRadius / 100) * opts.cutoutPercentage : 1, 0);
 		chart.radiusLength = (chart.outerRadius - chart.innerRadius) / chart.getVisibleDatasetCount();
 
-		me.outerRadius = chart.outerRadius - (chart.radiusLength * me.index);
+		me.outerRadius = chart.outerRadius - chart.radiusLength * me.index;
 		me.innerRadius = me.outerRadius - chart.radiusLength;
 	},
 
@@ -240,7 +239,7 @@ module.exports = DatasetController.extend({
 		arc.$previousStyle = {
 			backgroundColor: model.backgroundColor,
 			borderColor: model.borderColor,
-			borderWidth: model.borderWidth,
+			borderWidth: model.borderWidth
 		};
 
 		model.backgroundColor = valueOrDefault(options.hoverBackgroundColor, getHoverColor(options.backgroundColor));
@@ -269,9 +268,6 @@ module.exports = DatasetController.extend({
 			datasetIndex: me.index
 		};
 
-		return resolve([
-			me.chart.options.elements.arc.angle,
-			(2 * Math.PI) / count
-		], context, index);
+		return resolve([me.chart.options.elements.arc.angle, (2 * Math.PI) / count], context, index);
 	}
 });
